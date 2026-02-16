@@ -133,7 +133,7 @@ st.markdown('<div class="main-title">Cash-to-Cash Simulator</div>', unsafe_allow
 #st.write(st.__version__)
 left, center, right = st.columns([2, 1, 2])
 with center:
-    st.image("assets/mas_logo.jpg", width=140)
+    st.image("mas_logo.jpg", width=140)
 
 st.markdown("""
 <div class="sub-text">
@@ -671,4 +671,5 @@ with st.expander("📘 View Model Equations & Financial Logic"):
     )
 
     
+
 
