@@ -88,9 +88,40 @@ div[data-baseweb="input"] input {
 }
 
 hr {
-    margin-top:8px;
-    margin-bottom:18px;
+    margin-top:6px;
+    margin-bottom:6x;
 }
+            
+/* ===============================
+   FOB INPUT BACKGROUND
+   =============================== */
+input[aria-label^="fob"] {
+    background-color: #EAF2FB !important;
+}
+
+/* ===============================
+   FTZ INPUT BACKGROUND
+   =============================== */
+input[aria-label^="ftz"] {
+    background-color: #E9F7EF !important;
+}
+
+/* Keep border clean */
+div[data-baseweb="input"] > div {
+    border: 1px solid #CBD5E1 !important;
+    border-radius: 6px !important;
+}
+
+/* Remove default grey background */
+div[data-baseweb="input"] > div {
+    background-color: transparent !important;
+}
+
+
+
+  
+
+
 
 /* ==========================================
    REMOVE RED FOCUS BORDER (STREAMLIT 1.47)
@@ -129,11 +160,30 @@ button:focus {
 # HEADER
 # ======================================================
 
-st.markdown('<div class="main-title">Cash-to-Cash Simulator</div>', unsafe_allow_html=True)
+#st.markdown('<div class="main-title">Cash-to-Cash Simulator</div>', unsafe_allow_html=True)
 #st.write(st.__version__)
-left, center, right = st.columns([2, 1, 2])
-with center:
-    st.image("mas_logo.jpg", width=140)
+# left, center, right = st.columns([2, 1, 2])
+# with center:
+#     st.image("assets/mas_logo.jpg", width=140)
+
+import base64
+
+def get_base64_image(image_path):
+    with open(image_path, "rb") as img:
+        return base64.b64encode(img.read()).decode()
+
+logo_base64 = get_base64_image("assets/mas_logo.jpg")
+
+st.markdown(f"""
+<div style="text-align:center; margin-top:5px;">
+    <h3 style="margin-bottom:1px;">
+        Cash-to-Cash Simulator
+    </h3>
+    <img src="data:image/jpg;base64,{logo_base64}" 
+         width="150" 
+         style="display:block; margin:auto;">
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("""
 <div class="sub-text">
@@ -153,7 +203,7 @@ st.markdown('<div class="section-header">Data Inputs</div>', unsafe_allow_html=T
         
 #     ),)
 
-st.markdown("<hr>", unsafe_allow_html=True)
+#st.markdown("<hr>", unsafe_allow_html=True)
 
 # ======================================================
 # COLUMN HEADERS (FORMATTED)
@@ -175,7 +225,7 @@ h11.markdown('<div class="column-header">Out of Stock %</div>', unsafe_allow_htm
 h12.markdown('<div class="column-header">Avg Inventory (Units)</div>', unsafe_allow_html=True)
 h13.markdown('<div class="column-header">Gross Profit ($)</div>', unsafe_allow_html=True)
 
-st.markdown("<hr>", unsafe_allow_html=True)
+#st.markdown("<hr>", unsafe_allow_html=True)
 
 
 
@@ -183,55 +233,94 @@ st.markdown("<hr>", unsafe_allow_html=True)
 # FOB ROW
 # ======================================================
 
+#st.markdown('<div class="fob-row">', unsafe_allow_html=True)
 c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13 = st.columns(13)
 
 #c1.markdown("**FOB (Current)**")
 c1.markdown('<div class="column-header">FOB (Current)</div>', unsafe_allow_html=True)
-fob_landed = c2.number_input("", value=2.00, key="fob_landed")
-fob_po_terms = c3.number_input("", value=60, key="fob_po")
-fob_po_dc = c4.number_input("", value=60, key="fob_podc")
-fob_dc_store = c5.number_input("", value=14, key="fob_dcstore")
-fob_turns = c6.number_input("", value=4, key="fob_turns")
+fob_landed = c2.number_input("", value=2.00, key="fob_landed",label_visibility="collapsed")
+fob_po_terms = c3.number_input("", value=60, key="fob_po",label_visibility="collapsed")
+fob_po_dc = c4.number_input("", value=60, key="fob_podc",label_visibility="collapsed")
+fob_dc_store = c5.number_input("", value=14, key="fob_dcstore",label_visibility="collapsed")
+fob_turns = c6.number_input("", value=4, key="fob_turns",label_visibility="collapsed")
 
 # fob_store_customer = DAYS_IN_YEAR / fob_turns
 # fob_store_customer = c7.number_input("", value=fob_store_customer)
 
 fob_store_customer = int(DAYS_IN_YEAR / fob_turns)
-fob_store_customer = c7.number_input("", value=fob_store_customer, step=1, format="%d")
+fob_store_customer = c7.number_input("", value=fob_store_customer, step=1, format="%d",label_visibility="collapsed")
 
 
 c8.markdown(" ")
-fob_lead_time = c9.number_input("", value=74, key="fob_lead")
-fob_instock = c10.number_input("", value=92.0, key="fob_in")
-fob_outstock = c11.number_input("", value=8.0, key="fob_out")
-fob_avg_inventory = c12.number_input("", value=25000, key="fob_avg_inv")
-fob_gross_profit_input = c13.number_input("", value=300000, key="fob_gp")
+fob_lead_time = c9.number_input("", value=74, key="fob_lead",label_visibility="collapsed")
+fob_instock = c10.number_input("", value=92.0, key="fob_in",label_visibility="collapsed")
+fob_outstock = c11.number_input("", value=8.0, key="fob_out",label_visibility="collapsed")
+#fob_avg_inventory = c12.number_input("", value=25000, key="fob_avg_inv",format="%d",step=1,label_visibility="collapsed")
+fob_avg_inventory = c12.text_input(
+    "",
+    value=f"{25000:,}",
+    key="fob_avg_inv",
+    label_visibility="collapsed"
+)
 
+# Convert back to number
+fob_avg_inventory = int(fob_avg_inventory.replace(",", ""))
+
+#fob_gross_profit_input = c13.number_input("", value=300000, key="fob_gp",format="%d",step=1,label_visibility="collapsed")
+fob_gross_profit_input = c13.text_input(
+    "",
+    value=f"{300000:,}",
+    key="fob_gp",
+    label_visibility="collapsed"
+)
+
+# Convert back to number
+fob_gross_profit_input = int(fob_gross_profit_input.replace(",", ""))
+#st.markdown('</div>', unsafe_allow_html=True)
 # ======================================================
 # FTZ ROW
 # ======================================================
-
+#st.markdown('<div class="ftz-row">', unsafe_allow_html=True)
 c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13 = st.columns(13)
 
 #c1.markdown("**FTZ (Proposed)**")
 c1.markdown('<div class="column-header">FTZ (Proposed)</div>', unsafe_allow_html=True)
-ftz_landed = c2.number_input("", value=2.10, key="ftz_landed")
+ftz_landed = c2.number_input("", value=2.10, key="ftz_landed",label_visibility="collapsed")
 c3.markdown(" ")
-ftz_po_dc = c4.number_input("", value=7, key="ftz_podc")
-ftz_dc_store = c5.number_input("", value=7, key="ftz_dcstore")
-ftz_turns = c6.number_input("", value=12, key="ftz_turns")
+ftz_po_dc = c4.number_input("", value=7, key="ftz_podc",label_visibility="collapsed")
+ftz_dc_store = c5.number_input("", value=7, key="ftz_dcstore",label_visibility="collapsed")
+ftz_turns = c6.number_input("", value=12, key="ftz_turns",label_visibility="collapsed")
 
 ftz_store_customer = int(DAYS_IN_YEAR / ftz_turns)
-ftz_store_customer = c7.number_input("", value=ftz_store_customer, step=1, format="%d")
+ftz_store_customer = c7.number_input("", value=ftz_store_customer, step=1, format="%d",label_visibility="collapsed")
 
-ftz_po_terms = c8.number_input("", value=14, key="ftz_terms")
+ftz_po_terms = c8.number_input("", value=14, key="ftz_terms",label_visibility="collapsed")
 
-ftz_lead_time = c9.number_input("", value=14, key="ftz_lead")
-ftz_instock = c10.number_input("", value=96.0, key="ftz_in")
-ftz_outstock = c11.number_input("", value=4.0, key="ftz_out")
-ftz_avg_inventory = c12.number_input("", value=8333, key="ftz_avg_inv")
-ftz_gross_profit_input = c13.number_input("", value=290000, key="ftz_gp")
+ftz_lead_time = c9.number_input("", value=14, key="ftz_lead",label_visibility="collapsed")
+ftz_instock = c10.number_input("", value=96.0, key="ftz_in",label_visibility="collapsed")
+ftz_outstock = c11.number_input("", value=4.0, key="ftz_out",label_visibility="collapsed")
+#ftz_avg_inventory = c12.number_input("", value=8333, key="ftz_avg_inv",format="%d",step=1, label_visibility="collapsed")
+ftz_avg_inventory = c12.text_input(
+    "",
+    value=f"{8333:,}",
+    key="ftz_avg_inv",
+    label_visibility="collapsed"
+)
 
+# Convert back to number
+ftz_avg_inventory = int(ftz_avg_inventory.replace(",", ""))
+
+#ftz_gross_profit_input = c13.number_input("", value=290000, key="ftz_gp",format="%d",step=1, label_visibility="collapsed")
+ftz_gross_profit_input = c13.text_input(
+    "",
+    value=f"{290000:,}",
+    key="ftz_gp",
+    label_visibility="collapsed"
+)
+
+# Convert back to number
+ftz_gross_profit_input = int(ftz_gross_profit_input.replace(",", ""))
+#st.markdown('</div>', unsafe_allow_html=True)
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # ======================================================
@@ -240,7 +329,7 @@ st.markdown("<hr>", unsafe_allow_html=True)
 st.markdown('<div class="section-header">Common Data Inputs</div>', unsafe_allow_html=True)
 
 
-st.markdown("<hr>", unsafe_allow_html=True)
+#st.markdown("<hr>", unsafe_allow_html=True)
 
 # ======================================================
 # COLUMN HEADERS (FORMATTED)
@@ -249,7 +338,16 @@ st.markdown("<hr>", unsafe_allow_html=True)
 h1, h2, h3 = st.columns(3)
 
 DAYS_IN_YEAR = h1.number_input("Days in Year", value=360, key="DAYS_IN_YEAR", disabled=True)
-annual_units = h2.number_input("Annual Unit Sales", value=100000, key="annual_units")
+#annual_units = h2.number_input("Annual Unit Sales", value=100000, key="annual_units",format="%d", step=1)
+annual_units = h2.text_input(
+    "Annual Unit Sales",
+    value=f"{100000:,}",
+    key="annual_units"
+)
+
+# Convert back to number
+annual_units= int(annual_units.replace(",", ""))
+
 selling_price = h3.number_input("Selling Price per Unit ($)", value=5.0, key="selling_price")
 
 ##annual_units = st.number_input("Annual Unit Sales", value=100000)
@@ -366,7 +464,7 @@ if calculate:
             text-align:center;
             font-weight:600;
             border-radius:4px;">
-            GMROI (Unitless)
+            GMROI (Gross Margin Return on Investment)
         </div>
     """, unsafe_allow_html=True)
 
@@ -683,5 +781,4 @@ with st.expander("📘 View Model Equations & Financial Logic"):
     )
 
     
-
 
