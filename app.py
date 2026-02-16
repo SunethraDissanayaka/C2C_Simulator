@@ -172,7 +172,7 @@ def get_base64_image(image_path):
     with open(image_path, "rb") as img:
         return base64.b64encode(img.read()).decode()
 
-logo_base64 = get_base64_image("assets/mas_logo.jpg")
+logo_base64 = get_base64_image("mas_logo.jpg")
 
 st.markdown(f"""
 <div style="text-align:center; margin-top:5px;">
@@ -781,5 +781,6 @@ with st.expander("📘 View Model Equations & Financial Logic"):
     )
 
     
+
 
 
