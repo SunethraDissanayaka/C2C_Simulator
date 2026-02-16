@@ -1,4 +1,6 @@
 import streamlit as st
+import matplotlib.pyplot as plt
+import numpy as np
 
 st.set_page_config(page_title="FOB vs FTZ Simulator", layout="wide")
 DAYS_IN_YEAR = 360
@@ -408,8 +410,7 @@ if calculate:
 
 
 
-import matplotlib.pyplot as plt
-import numpy as np
+
 
 if calculate:
     st.markdown("<hr>", unsafe_allow_html=True)
@@ -671,5 +672,6 @@ with st.expander("📘 View Model Equations & Financial Logic"):
     )
 
     
+
 
 
