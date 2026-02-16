@@ -147,9 +147,7 @@ st.markdown("<hr>", unsafe_allow_html=True)
 # INPUT SECTION HEADER
 # ======================================================
 
-st.markdown('<div class="section-header">Data Inputs</div>', help=("Please Enter Your Inputs"
-        
-    ), unsafe_allow_html=True)
+st.markdown('<div class="section-header">Data Inputs</div>', unsafe_allow_html=True)
 # st.caption("Please enter all required values below.")
 # st.subheader("Data Inputs",help=("Please Enter Your Inputs"
         
@@ -239,9 +237,7 @@ st.markdown("<hr>", unsafe_allow_html=True)
 # ======================================================
 # COMMON INPUTS
 # ======================================================
-st.markdown('<div class="section-header">Common Data Inputs</div>', help=("Please Enter Your Inputs"
-        
-    ), unsafe_allow_html=True)
+st.markdown('<div class="section-header">Common Data Inputs</div>', unsafe_allow_html=True)
 
 
 st.markdown("<hr>", unsafe_allow_html=True)
@@ -687,4 +683,5 @@ with st.expander("📘 View Model Equations & Financial Logic"):
     )
 
     
+
 
