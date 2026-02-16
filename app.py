@@ -1,6 +1,4 @@
 import streamlit as st
-import matplotlib.pyplot as plt
-import numpy as np
 
 st.set_page_config(page_title="FOB vs FTZ Simulator", layout="wide")
 DAYS_IN_YEAR = 360
@@ -181,6 +179,8 @@ h13.markdown('<div class="column-header">Gross Profit ($)</div>', unsafe_allow_h
 
 st.markdown("<hr>", unsafe_allow_html=True)
 
+
+
 # ======================================================
 # FOB ROW
 # ======================================================
@@ -286,33 +286,8 @@ def calculate_model(landed, po_terms, po_dc, dc_store, turns):
 
     return gmroi, c2c
 
-# ======================================================
-# RESULTS
-# ======================================================
 
-# if calculate:
 
-#     fob_gmroi, fob_c2c = calculate_model(
-#         fob_landed, fob_po_terms, fob_po_dc, fob_dc_store, fob_turns
-#     )
-
-#     ftz_gmroi, ftz_c2c = calculate_model(
-#         ftz_landed, ftz_po_terms, ftz_po_dc, ftz_dc_store, ftz_turns
-#     )
-
-#     st.markdown("## Results")
-
-#     col1, col2 = st.columns(2)
-
-#     with col1:
-#         st.subheader("FOB Model")
-#         st.metric("GMROI", f"{fob_gmroi:.2f}")
-#         st.metric("Cash to Cash Cycle (Days)", f"{fob_c2c:.0f}")
-
-#     with col2:
-#         st.subheader("FTZ Model")
-#         st.metric("GMROI", f"{ftz_gmroi:.2f}")
-#         st.metric("Cash to Cash Cycle (Days)", f"{ftz_c2c:.0f}")
 
 
 # ======================================================
@@ -321,13 +296,52 @@ def calculate_model(landed, po_terms, po_dc, dc_store, turns):
 
 if calculate:
 
-    fob_gmroi, fob_c2c = calculate_model(
-        fob_landed, fob_po_terms, fob_po_dc, fob_dc_store, fob_turns
-    )
+    # fob_gmroi, fob_c2c = calculate_model(
+    #     fob_landed, fob_po_terms, fob_po_dc, fob_dc_store, fob_turns
+    # )
 
-    ftz_gmroi, ftz_c2c = calculate_model(
-        ftz_landed, ftz_po_terms, ftz_po_dc, ftz_dc_store, ftz_turns
-    )
+    # ftz_gmroi, ftz_c2c = calculate_model(
+    #     ftz_landed, ftz_po_terms, ftz_po_dc, ftz_dc_store, ftz_turns
+    # )
+
+     
+    # FOB Calculations
+    # -------------------------------
+
+    # Inventory Days
+    fob_inventory_days = fob_lead_time + fob_store_customer
+
+    # Cash to Cash Cycle
+    fob_c2c = fob_inventory_days - fob_po_terms
+
+    # Average Inventory Value
+    fob_avg_inventory_value = fob_avg_inventory * fob_landed
+
+    # GMROI (using user input gross profit)
+    if fob_avg_inventory_value != 0:
+        fob_gmroi = fob_gross_profit_input / fob_avg_inventory_value
+    else:
+        fob_gmroi = 0
+
+
+    # -------------------------------
+    # FTZ Calculations
+    # -------------------------------
+
+    # Inventory Days
+    ftz_inventory_days = ftz_lead_time + ftz_store_customer
+
+    # Cash to Cash Cycle
+    ftz_c2c = ftz_inventory_days - ftz_po_terms
+
+    # Average Inventory Value
+    ftz_avg_inventory_value = ftz_avg_inventory * ftz_landed
+
+    # GMROI (using user input gross profit)
+    if ftz_avg_inventory_value != 0:
+        ftz_gmroi = ftz_gross_profit_input / ftz_avg_inventory_value
+    else:
+        ftz_gmroi = 0
 
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -410,7 +424,8 @@ if calculate:
 
 
 
-
+import matplotlib.pyplot as plt
+import numpy as np
 
 if calculate:
     st.markdown("<hr>", unsafe_allow_html=True)
@@ -672,6 +687,4 @@ with st.expander("📘 View Model Equations & Financial Logic"):
     )
 
     
-
-
 
