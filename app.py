@@ -380,9 +380,12 @@ if calculate:
     # -------------------------------
 
     # Inventory Days
-    fob_inventory_days = fob_lead_time + fob_store_customer
+    # fob_inventory_days = fob_lead_time + fob_store_customer
 
-    # Cash to Cash Cycle
+    # # Cash to Cash Cycle
+    # fob_c2c = fob_inventory_days - fob_po_terms
+
+    fob_inventory_days = fob_po_dc + fob_dc_store + fob_store_customer
     fob_c2c = fob_inventory_days - fob_po_terms
 
     # Average Inventory Value
@@ -400,10 +403,14 @@ if calculate:
     # -------------------------------
 
     # Inventory Days
-    ftz_inventory_days = ftz_lead_time + ftz_store_customer
+    # ftz_inventory_days = ftz_lead_time + ftz_store_customer
 
-    # Cash to Cash Cycle
+    # # Cash to Cash Cycle
+    # ftz_c2c = ftz_inventory_days - ftz_po_terms
+
+    ftz_inventory_days = ftz_po_dc + ftz_dc_store + ftz_store_customer
     ftz_c2c = ftz_inventory_days - ftz_po_terms
+
 
     # Average Inventory Value
     ftz_avg_inventory_value = ftz_avg_inventory * ftz_landed
